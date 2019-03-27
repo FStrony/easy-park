@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+	<ui:define name="extraHeader">
+		<h:outputScript library="js" name="jquery-ui.custom.min.js" />
+		<h:outputScript library="js" name="jquery.maskedMoney.js"></h:outputScript>
+		<h:outputScript library="js" name="jquery-ui-timepicker-addon.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="estiloMapa.css"></h:outputStylesheet>
+		<script type="text/javascript"
+			src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&amp;key=AIzaSyBaukBeZRINVgW2h6gmOpH3mKoZ6j3R4QY"></script>
+		<h:outputScript name="mapa.js" library="js" />
+
+		<script>
+			$(function() {
+				exibeMapa("-23.574072606588167", "-46.62321628650818");
+			})
+		</script>
+		<h:outputScript library="js" name="validations.js" />
+		<h:outputScript library="js" name="pathway.js" />
+		<h:outputScript library="js" name="modalJS.js" />
+		<h:outputScript library="js" name="maskMoneyPage.js" />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="form">
+
+			<div class="pathWay" style="pointer-events: none;">
+				<ul class="tabs2">
+
+					<li class="active"><a href="#tab1" onclick="next()"
+						title="#{inter.edit_information}" data-toggle="tab"><span>#{inter.information}</span></a></li>
+
+					<li><a href="#tab2" title="#{inter.edit_location}"
+						onclick="next()" data-toggle="tab"><span>#{inter.location}</span></a></li>
+
+					<li><a href="#tab3" title="#{inter.set_vacancie_values}"
+						onclick="next()" data-toggle="tab"><span>#{inter.vacancies_values}</span></a></li>
+
+					<li><a href="#tab4" title="#{inter.set_operation}"
+						onclick="next()" data-toggle="tab"><span>#{inter.operation}</span></a></li>
+
+				</ul>
+			</div>
+
+			<div class="tab-content">
+
+				<div class="tab-pane active" id="tab1">
+					<!-- TAB INFORMAÇÕES DO ESTACIONAMENTO -->
+					<ui:include src="tab/tabInfoEstacionamento.xhtml" />
+					<ui:include src="wizard/janelaTelefone.xhtml" />
+					<div class="boxActions">
+						<h:commandButton value="#{inter.save}"
+							styleClass="fright btn btn-success btn-large"
+							action="#{estacionamentoBean.save}">
+							<f:ajax execute="form" render="form"></f:ajax>
+						</h:commandButton>
+						<a href="#tab2" data-toggle="tab"
+							class="btn btn-primary ico-right-open-2 icoPosRight btn-large fright"
+							onclick="next();exibeMapa('-23.574072606588167', '-46.62321628650818');">#{inter.next_step}</a>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab2">
+					<!-- TAB LOCALIZACAO DO ESTACIONAMENTO -->
+					<ui:include src="tab/tabLocalizacao.xhtml" />
+					<div class="boxActions">
+						<a href="#tab1" data-toggle="tab"
+							class="btn btn-primary ico-left-open-2 icoPosLeft btn-large"
+							onclick="prev()">#{inter.prev_step}</a>
+						<h:commandButton value="#{inter.save}"
+							styleClass="fright btn btn-success btn-large"
+							action="#{estacionamentoBean.save}">
+							<f:ajax execute="form" render="form"></f:ajax>
+						</h:commandButton>
+						<a href="#tab3" data-toggle="tab"
+							class="btn btn-primary ico-right-open-2 icoPosRight btn-large fright"
+							onclick="next()">#{inter.next_step}</a>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab3">
+					<!-- TAB VAGAS E VALORES -->
+					<ui:include src="wizard/janelaVagasEValores.xhtml" />
+					<ui:include src="tab/tabVagasEValores.xhtml" />
+					<div class="boxActions">
+						<a href="#tab2" data-toggle="tab"
+							class="btn btn-primary ico-left-open-2 icoPosLeft btn-large"
+							onclick="prev();exibeMapa('-23.574072606588167', '-46.62321628650818');">#{inter.prev_step}</a>
+						<h:commandButton value="#{inter.save}"
+							styleClass="fright btn btn-success btn-large"
+							action="#{estacionamentoBean.save}">
+							<f:ajax execute="form" render="form"></f:ajax>
+						</h:commandButton>
+						<a href="#tab4" data-toggle="tab"
+							class="btn btn-primary ico-right-open-2 icoPosRight btn-large fright"
+							onclick="next()">#{inter.next_step}</a>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab4">
+					<!-- HORARIO DE FUNCIONAMENTO -->
+					<ui:include src="wizard/janelaFuncionamento.xhtml" />
+					<ui:include src="tab/tabFuncionamento.xhtml" />
+					<div class="boxActions">
+						<a href="#tab3" data-toggle="tab"
+							class="btn btn-primary ico-left-open-2 icoPosLeft btn-large"
+							onclick="prev()">#{inter.prev_step}</a>
+						<h:commandButton value="#{inter.save}"
+							styleClass="fright btn btn-success btn-large"
+							action="#{estacionamentoBean.save}">
+
+						</h:commandButton>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

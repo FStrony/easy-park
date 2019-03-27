@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+
+
+	<div class="modal fade" id="modalFuncionamento" role="dialog"
+		aria-live="polite">
+		<div class="modal-header">
+			<h3>Informações de Cadastro</h3>
+		</div>
+		<div class="modal-body">
+			<h:panelGrid id="dadosHorarioFuncionamento" columns="2"
+				style="margin-bottom:10px">
+
+
+				<h:panelGrid id="gropDia" styleClass="control-group">
+					<h:outputLabel value="Dia" styleClass="control-label" />
+					<h:selectOneMenu id="idSelecioneTipoDia" onchange="onChangeDia();"
+						value="#{estacionamentoBean.tipoDia.id}">
+						<f:selectItem itemValue="" itemLabel="Selecione..." />
+						<f:selectItems value="#{estacionamentoBean.listaTipoDia}"
+							var="tipoDia" itemLabel="#{tipoDia.descricao}"
+							itemValue="#{tipoDia.id}" />
+					</h:selectOneMenu>
+					<span class="help-inline" style="width: 230px; display: none;"
+						id="spanDia">Selecione um dia</span>
+				</h:panelGrid>
+
+				<br />
+				<h:panelGrid id="groupAbertura" styleClass="control-group">
+
+					<h:outputLabel value="Horário de Abertura" for="horarioInicial"
+						styleClass="control-label" />
+					<h:inputText id="horarioInicial" onblur="onBlurHorarioAbertura();"
+						value="#{estacionamentoBean.horarioFuncionamentoInicio}">
+					</h:inputText>
+					<span class="help-inline" style="width: 230px; display: none;"
+						id="spanAbertura">Informe o horário de abertura</span>
+				</h:panelGrid>
+
+				<br />
+				<h:panelGrid id="groupFechamento" styleClass="control-group">
+					<h:outputLabel value="Horário de Fechamento" for="horarioFinal"
+						styleClass="control-label" />
+
+					<h:inputText id="horarioFinal" name="hora"
+						onblur="onBlurHorarioFechamento();"
+						value="#{estacionamentoBean.horarioFuncionamentoFim}">
+					</h:inputText>
+					<span class="help-inline" style="width: 230px; display: none;"
+						id="spanFechamento">Informe o horário de fechamento</span>
+
+				</h:panelGrid>
+			</h:panelGrid>
+		</div>
+		<div class="modal-footer">
+			<h:commandButton id="incluirHorarioFuncionamento"
+				styleClass="fright btn btn-primary ico-plus"
+				action="#{estacionamentoBean.addHorarioFuncionamento}"
+				value="Incluir" onclick="validaFuncionamento();">
+				<f:ajax execute="idSelecioneTipoDia horarioInicial horarioFinal"
+					render="exibeHorarioFuncionamento idSelecioneTipoDia horarioInicial horarioFinal " />
+			</h:commandButton>
+		</div>
+	</div>
+</ui:composition>

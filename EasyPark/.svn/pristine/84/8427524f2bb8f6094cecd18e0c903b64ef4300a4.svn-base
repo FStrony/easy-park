@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<div modal="true" widgetVar="statusDialog" header="Status"
+	draggable="false" closable="false">
+	<h:graphicImage value="#{resource['img/ajax-loading-bar.gif']}" />
+</div>
+
+</html>

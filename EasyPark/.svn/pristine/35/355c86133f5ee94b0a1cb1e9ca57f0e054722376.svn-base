@@ -1,0 +1,13 @@
+/* css for timepicker */
+.ui-timepicker-select{
+	
+	width: 60px !important;
+}
+
+.ui-datepicker {
+    box-shadow: 0 0 16px 5px rgba(0, 0, 0, 1);
+    display: none;
+    padding: 5px;
+    width: 150px;
+    z-index: 1050 !important;
+}

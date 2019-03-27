@@ -1,0 +1,78 @@
+{
+    "estacionamento1": {
+        "latitude": "-23.58693458361906",
+        "longitude": " -46.63435226455692",
+        "detalhes": {
+            "nome": "Estacionamento Careiro",
+            "vagas": "28",
+            "precos": {
+                "hora": "R$ 13.00",
+                "mensal": "R$ 140.00",
+                "anual": "R$ 1,240.00",
+                "feriado": "R$ 30.00"
+            },
+            "horario": {
+                "semana": "7:00 - 23:00",
+                "final de semana": "7:00 - 20:00",
+                "feriado": "07:00 - 20:00"
+            }
+        }
+    },
+        "estacionamento3": {
+        "latitude": "-23.575286006775887",
+        "longitude": " -46.623637980426004",
+        "detalhes": {
+            "nome": "Estacionamento FIAP",
+            "vagas": "28",
+            "precos": {
+                "hora": "R$ 13.00",
+                "mensal": "R$ 140.00",
+                "anual": "R$ 1,240.00",
+                "feriado": "R$ 30.00"
+            },
+            "horario": {
+                "semana": "7:00 - 23:00",
+                "final de semana": "7:00 - 20:00",
+                "feriado": "07:00 - 20:00"
+            }
+        }
+    },
+        "estacionamento4": {
+        "latitude": "-23.574696004011688",
+        "longitude": " -46.62305862327879",
+        "detalhes": {
+            "nome": "Estacionamento do Zé",
+            "vagas": "28",
+            "precos": {
+                "hora": "R$ 13.00",
+                "mensal": "R$ 140.00",
+                "anual": "R$ 1,240.00",
+                "feriado": "R$ 30.00"
+            },
+            "horario": {
+                "semana": "7:00 - 23:00",
+                "final de semana": "7:00 - 20:00",
+                "feriado": "07:00 - 20:00"
+            }
+        }
+    },
+    "estacionamento2": {
+        "latitude": "-23.58567601954064",
+        "longitude": "-46.6337729074097",
+        "detalhes": {
+            "nome": "Estacionamento Firmeza",
+            "vagas": "50",
+            "precos": {
+                "hora": "R$ 10.00",
+                "mensal": "R$ 120.00",
+                "anual": "R$ 1,140.00",
+                "feriado": "R$ 20.00"
+            },
+            "horario": {
+                "semana": "8:00 - 22:00",
+                "final de semana": "8:00 - 19:00",
+                "feriado": "08:00 - 19:00"
+            }
+        }
+    }
+}

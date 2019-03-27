@@ -1,0 +1,167 @@
+!SESSION 2013-10-07 20:31:34.026 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.7.0_11
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:41:13.662
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:41:14.130
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:41:16.243
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:42:01.781
+!MESSAGE 46 files modified in module EasyPark_EJB
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:42:01.961
+!MESSAGE 19 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2013-10-07 20:42:07.950
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2013-10-07 20:42:21.062
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 0 2013-10-07 20:42:22.513
+!MESSAGE Module EasyPark_EAR on JBoss 7.1 Runtime 4 Server not yet fully deployed. Waiting...
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 20:56:41.057
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:00:15.925
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:01:44.043
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:02:53.132
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:05:32.846
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:06:25.518
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:06:26.428
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:06:32.431
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:12:16.711
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:22:44.382
+!MESSAGE 3 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:43:06.218
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:43:18.568
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:43:25.687
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:43:43.002
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:23.183
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:28.238
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:28.602
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:30.423
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:50.385
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:50.767
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:46:53.330
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:48:18.376
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 21:49:43.646
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16973825 2013-10-07 21:50:39.319
+!MESSAGE Server processes have been terminated.
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16973825 2013-10-07 21:50:39.445
+!MESSAGE Server processes have been terminated.
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16973825 2013-10-07 21:50:39.449
+!MESSAGE Server processes have been terminated.
+!SESSION 2013-10-07 22:35:50.569 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.7.0_11
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:39:08.509
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:39:08.883
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:39:11.301
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2013-10-07 22:39:21.535
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2013-10-07 22:39:30.880
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 0 2013-10-07 22:39:33.365
+!MESSAGE Module EasyPark_EAR on JBoss 7.1 Runtime 4 Server not yet fully deployed. Waiting...
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:40:49.557
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:40:49.941
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:40:52.330
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:40:58.228
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:40:58.671
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:41:00.953
+!MESSAGE Module EasyPark published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:44:27.435
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:44:30.998
+!MESSAGE 1 files modified in module EasyPark
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:44:43.087
+!MESSAGE Module EasyPark_EAR published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:44:43.454
+!MESSAGE Module EasyPark_EJB published without error.
+
+!ENTRY org.jboss.ide.eclipse.as.core 0 33685505 2013-10-07 22:44:46.476
+!MESSAGE Module EasyPark published without error.

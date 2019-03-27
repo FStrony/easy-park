@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DA TABELA DE PREÇOS VS PERIODO -->
+
+		<h:panelGrid id="tbPrecoPeriodoValorHora" header="Tabela de Preço vs Periodo">
+
+				<ui:repeat var="ltvt" value="#{estacionamentoBean.listaPeriodoTO}">
+						<h4>#{ltvt.descricaoHorarioFuncionamento}</h4>
+						
+						<h:dataTable value="#{ltvt.tipoVeiculoTO}" var="tipoVeiculoTO" class="tableList">
+						
+							         <h:column> 
+							        	<f:facet name="header">
+						           			 Tipo Veiculo
+						           		</f:facet>
+						           		#{tipoVeiculoTO.descricao}
+							        </h:column>
+							         <h:column> 
+								         	<f:facet name="header"> 
+							         		
+						           			 Valor Hora
+						           		</f:facet>
+						           		<h:inputText value="#{tipoVeiculoTO.valor}"  />
+							        </h:column>
+						</h:dataTable>
+				</ui:repeat>
+		</h:panelGrid>
+
+</ui:composition>

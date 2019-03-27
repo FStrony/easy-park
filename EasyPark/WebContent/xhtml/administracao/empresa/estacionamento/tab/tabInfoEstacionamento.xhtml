@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DO ESTACIONAMENTO-->
+	<h:panelGrid columns="2" id="idTabInfo">
+		<h:panelGrid styleClass="control-group" id="groupNome">
+			<h:outputLabel value="Nome do estacionamento" for="idNomeEstac"
+				styleClass="control-label" />
+			<h:inputText id="idNomeEstac" size="40" onblur="onBlurNome();"
+				value="#{estacionamentoBean.estacionamento.nome}" style="width:450px" />
+			<span class="help-inline" style="width: 206px; display: none;"
+				id="spanNome">Digite o nome</span>
+		</h:panelGrid>
+		<h:column></h:column>
+		<h:panelGrid styleClass="control-group" id="groupSeguro">
+			<h:outputLabel value="Assegurado" for="idSeguro"
+				styleClass="control-label" />
+			<h:selectOneMenu value="#{estacionamentoBean.isSeguro}"
+				id="idSeguro" onchange="onChangeSeguro();" style="width:100px">
+				<f:selectItem itemValue="1" itemLabel="Sim" />
+				<f:selectItem itemValue="0" itemLabel="Não" />
+			</h:selectOneMenu>
+			<span class="help-inline" style="width: 206px; display: none;"
+				id="spanSeguro">Selecione uma opção</span>
+		</h:panelGrid>
+	</h:panelGrid>
+	<p><h:inputHidden value="#{estacionamentoBean.estacionamento.id}" /></p>
+	<h:outputLabel value="Telefones" />
+	<h:panelGrid id="idInfoComplementares" columns="2">
+		<h:dataTable class="tableList" id="exibeTelefones"
+			value="#{estacionamentoBean.listaTelefone}" var="telefone">
+			<h:column>
+				<f:facet name="header">Tipo: </f:facet>
+				<h:outputText value="#{telefone.tipoTelefone.descricao}" />
+				<h:inputHidden value="#{telefone.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">DDD</f:facet>
+				<h:outputText value="#{telefone.ddd}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Número</f:facet>
+				<h:outputText value="#{telefone.numero}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Ações</f:facet>
+				<h:commandButton styleClass="fright btn btn-primary" value="Remover" 
+					action="#{estacionamentoBean.removerTelefone}">
+					<f:ajax execute="@this" render=":form:idInfoComplementares" />
+					<f:setPropertyActionListener value="#{telefone}"
+						target="#{estacionamentoBean.telefone}"></f:setPropertyActionListener>
+				</h:commandButton>
+
+			</h:column>
+		</h:dataTable>
+		<h:commandButton value="Novo Telefone" styleClass="btn btn-primary"
+			type="button" id="modalTelefone" data-toggle="modal" onclick="abreModalTelefone()" />
+	</h:panelGrid>
+	<p></p>
+	<h:panelGrid id="idInfo" columns="2">
+
+		<h:panelGrid styleClass="control-group" id="groupEmail">
+			<h:outputLabel value="Email" for="idEmail" styleClass="control-label"/>
+			<h:inputText id="idEmail" onblur="onBlurEmail();"
+				value="#{estacionamentoBean.estacionamento.email}" style="width:300px" />
+				<span class="help-inline" style="width: 206px; display: none;"
+				id="spanEmail">Informe um email valido</span>
+		</h:panelGrid>
+		<h:column></h:column>
+		<h:panelGrid styleClass="control-group" id="groupSite">
+			<h:outputLabel value="Site" for="idSite" />
+			<h:inputText id="idSite"
+				value="#{estacionamentoBean.estacionamento.site}" style="width:300px" />
+		</h:panelGrid>
+	</h:panelGrid>
+</ui:composition>

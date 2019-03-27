@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+	<ui:define name="extraHeader">
+		<h:outputScript library="js" name="jquery-ui.custom.min.js" />
+		<h:outputScript library="js" name="jquery.maskedMoney.js"></h:outputScript>
+		<h:outputScript library="js" name="jquery-ui-timepicker-addon.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="estiloMapa.css"></h:outputStylesheet>
+		<script type="text/javascript"
+			src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&amp;key=AIzaSyBaukBeZRINVgW2h6gmOpH3mKoZ6j3R4QY"></script>
+		<h:outputScript name="mapa.js" library="js" />
+		<h:outputScript library="js" name="validations.js" />
+		<h:outputScript library="js" name="pathway.js" />
+		<h:outputScript library="js" name="tablesValidations.js" />
+		<h:outputScript library="js" name="modalJS.js" />
+		<h:outputScript library="js" name="maskMoneyPage.js" />
+		<h:outputScript library="js" name="jquery.maskedinput.js" />
+		<script>
+			$(function() {
+				exibeMapa("-23.574072606588167", "-46.62321628650818");
+			})
+			jQuery(function($) {
+				$("#horarioInicial").mask("99:99");
+				$("#horarioFinal").mask("99:99");
+			});
+		</script>
+
+
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form id="form">
+
+			<div class="pathWay" style="pointer-events: none;">
+				<ul class="tabs2" style="overflow: hidden; white-space: nowrap;">
+
+					<li class="active"><a href="#"
+						title="#{inter.edit_information}" data-toggle="tab"><b>1</b> <span>#{inter.step}
+								1</span>#{inter.information}</a></li>
+
+					<li><a href="#" title="#{inter.edit_location}"
+						data-toggle="tab"><b>2</b> <span>#{inter.step} 2</span>
+							#{inter.location}</a></li>
+
+					<li><a href="#" title="#{inter.set_vacancie_values}"
+						data-toggle="tab"><b>3</b> <span>#{inter.step} 3</span>
+							#{inter.vacancies_values}</a></li>
+
+					<li><a href="#" title="#{inter.set_operation}"
+						data-toggle="tab"><b>4</b> <span>#{inter.step} 4</span>
+							#{inter.operation}</a></li>
+
+					<li><a href="#" title="#{inter.set_periods}" data-toggle="tab"><b>5</b>
+							<span>#{inter.step} 5</span>#{inter.periods}</a></li>
+
+				</ul>
+			</div>
+
+			<div class="tab-content">
+
+				<div class="tab-pane active" id="tab1">
+					<!-- TAB INFORMAÇÕES DO ESTACIONAMENTO -->
+					<ui:include src="wizard/janelaTelefone.xhtml" />
+					<ui:include src="tab/tabInfoEstacionamento.xhtml" />
+					<div class="boxActions">
+						<h:commandLink hreflang="#tab2"
+							onclick="next();exibeMapa('-23.574072606588167', '-46.62321628650818');"
+							data-toggle="tab"
+							styleClass="btn btn-primary ico-right-open-2 icoPosRight btn-large fright"
+							value="#{inter.next_step}" title="#{inter.location}">
+							<f:ajax execute="idNomeEstac"></f:ajax>
+						</h:commandLink>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab2">
+					<!-- TAB LOCALIZACAO DO ESTACIONAMENTO -->
+					<ui:include src="tab/tabLocalizacao.xhtml" />
+					<br></br>
+					<div class="boxActions">
+						<h:commandLink hreflang="#tab1"
+							onclick="prev();exibeMapa('-23.574072606588167', '-46.62321628650818');"
+							data-toggle="tab"
+							styleClass="btn btn-primary ico-left-open-2 icoPosLeft btn-large"
+							value="#{inter.prev_step}" title="#{inter.information}">
+
+						</h:commandLink>
+
+						<h:commandLink hreflang="#tab3"
+							onclick="next();initialize();carregaAutoComplete();"
+							data-toggle="tab"
+							styleClass="btn btn-primary ico-right-open-2 icoPosRight btn-large fright"
+							value="#{inter.next_step}" title="#{inter.vacancies_values}">
+
+							<f:ajax render=":form:idAtualizaVagasValores"></f:ajax>
+
+						</h:commandLink>
+					</div>
+
+				</div>
+
+				<div class="tab-pane" id="tab3">
+					<!-- TAB VAGAS E VALORES -->
+					<ui:include src="wizard/janelaVagasEValores.xhtml" />
+					<ui:include src="tab/tabVagasEValores.xhtml" />
+					<div class="boxActions">
+						<h:commandLink hreflang="#tab3" value="#{inter.prev_step}"
+							onclick="prev()" data-toggle="tab"
+							title="#{inter.vacancies_values}"
+							styleClass="btn btn-primary ico-left-open-2 icoPosLeft btn-large">
+							<f:ajax render=":form:tbPrecoPeriodoValorHora"></f:ajax>
+						</h:commandLink>
+
+						<h:commandLink hreflang="#tab5" data-toggle="tab"
+							value="#{inter.next_step}" onclick="next()"
+							title="#{inter.operation}"
+							styleClass="btn btn-primary ico-right-open-2 icoPosRight btn-large fright">
+							<f:ajax render=":form:tbPrecoPeriodoValorHora"></f:ajax>
+						</h:commandLink>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab4">
+					<!-- HORARIO DE FUNCIONAMENTO -->
+					<ui:include src="wizard/janelaFuncionamento.xhtml" />
+					<ui:include src="tab/tabFuncionamento.xhtml" />
+					<div class="boxActions">
+						<h:commandLink hreflang="#tab3" value="#{inter.prev_step}"
+							onclick="prev()" data-toggle="tab"
+							title="#{inter.vacancies_values}"
+							styleClass="btn btn-primary ico-left-open-2 icoPosLeft btn-large">
+							<f:ajax render=":form:tbPrecoPeriodoValorHora"></f:ajax>
+						</h:commandLink>
+
+						<h:commandLink hreflang="#tab5" data-toggle="tab"
+							value="#{inter.next_step}" onclick="next()"
+							title="#{inter.periods}"
+							styleClass="btn btn-primary ico-right-open-2 icoPosRight btn-large fright">
+							<f:ajax render=":form:tbPrecoPeriodoValorHora"></f:ajax>
+						</h:commandLink>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab5">
+					<!-- TAB TABELA DE PREÇOS -->
+					<ui:include src="tab/tabTabelaPrecoPeriodo.xhtml" />
+					<div class="boxActions">
+						<h:commandLink hreflang="#tab4" data-toggle="tab"
+							value="#{inter.prev_step}" onclick="prev()"
+							styleClass="btn btn-primary ico-left-open-2 icoPosLeft btn-large"
+							title="#{inter.operation}">
+
+						</h:commandLink>
+
+						<h:commandButton value="#{inter.save}"
+							styleClass="fright btn btn-success btn-large"
+							action="#{estacionamentoBean.save()}" title="#{inter.save}">
+						</h:commandButton>
+
+					</div>
+				</div>
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

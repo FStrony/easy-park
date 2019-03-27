@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+
+	<h:panelGrid id="idTabListFuncionamento" columns="1">
+		<span style="color: red;">É necessario adicionar pelo menos 1
+			item</span>
+		<h:dataTable class="tableList" id="exibeHorarioFuncionamento"
+			value="#{estacionamentoBean.listaHorarioFuncionamento}"
+			var="horarioEstacionamento">
+			<h:column>
+				<f:facet name="header">Tipo de Dia </f:facet>
+						    		#{horarioEstacionamento.tipoDia.descricao}
+						</h:column>
+			<h:column>
+				<f:facet name="header">Horário de Abertura </f:facet>
+				<h:outputText
+					value="#{horarioEstacionamento.horarioFuncionamentoInicio}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Horário de Fechamento</f:facet>
+				<h:outputText
+					value="#{horarioEstacionamento.horarioFuncionamentoFinal}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Ações</f:facet>
+				<h:commandButton styleClass="fright btn btn-primary"
+					action="#{estacionamentoBean.removeHorarioFuncionamento}"
+					value="Remover">
+					<f:ajax execute="@this"
+						render=":form:idTabListFuncionamento :form:dadosHorarioFuncionamento" />
+					<f:setPropertyActionListener value="#{horarioEstacionamento}"
+						target="#{estacionamentoBean.horarioFuncionamento}"></f:setPropertyActionListener>
+				</h:commandButton>
+			</h:column>
+		</h:dataTable>
+		<h:commandButton value="Adicionar horarios" styleClass="btn btn-primary"
+			type="button" onclick="abreModalFuncionamento()" data-toggle="modal" />
+	</h:panelGrid>
+</ui:composition>

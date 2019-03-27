@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+
+	<ui:define name="extraHeader">
+
+		<h:outputStylesheet library="css" name="estiloMapa.css" />
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&amp;key=AIzaSyBaukBeZRINVgW2h6gmOpH3mKoZ6j3R4QY"></script>
+		<h:outputScript name="mapa.js" library="js" />
+		<script type="text/javascript">
+			$(function() {
+				exibeMapa("-23.574072606588167", "-46.62321628650818");
+				$('input[name=txtLatMax]:radio').change(function(){
+				    createCircle(map,parseInt($(this).val()));
+				    latitude = new google.maps.LatLng("-23.574072606588167",  "-46.62321628650818");
+				    find_closest_marker(latitude, parseInt($(this).val()));
+				});
+			})
+		</script>
+		<h:outputScript library="js" name="jquery-ui.custom.min.js" />
+	</ui:define>
+	<ui:define name="content">
+		<div id="apresentacao">
+
+			<h:panelGrid styleClass="control-group"  style="width: 950px;">
+				
+					<label class="control-label" for="txtEndereco">Destino</label>
+					<input type="text" id="txtEndereco" name="txtEndereco" style="width: 730px;" />
+
+
+					<button id="btnEndereco" class="btn btn-primary fRight" onclick="buscarEstacionamentos()">Buscar
+						Estacionamentos</button>
+				
+			</h:panelGrid>
+			<h:form>
+				<p style="display: none" id="latitude"
+					value="#{filtroEstacionamentoBean.latitude}"></p>
+				<p style="display: none" id="longitude"
+					value=" #{filtroEstacionamentoBean.longitude}"></p>
+			</h:form>
+
+
+			<h:panelGrid styleClass="control-group">
+
+				<label class="control-label" for="latMax">Distancia Máxima:</label>
+				<input type="radio" id="latMax" name="txtLatMax" value="500" />500m 
+				<input type="radio" id="latMax" name="txtLatMax" checked="checked" value="1000" />1km 
+				<input type="radio" id="latMax" name="txtLatMax" value="2000" />2km
+				
+				
+					
+			</h:panelGrid>
+
+			<div id="mapa"></div>
+			<input type="hidden" id="txtLatitude" name="txtLatitude" /> <input
+				type="hidden" id="txtLongitude" name="txtLongitude" />
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

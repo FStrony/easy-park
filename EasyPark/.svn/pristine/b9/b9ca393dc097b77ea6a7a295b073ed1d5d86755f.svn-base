@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+	<h:panelGrid id="idTabListVagasEValores" columns="1">
+		<span style="color: red;">É necessario adicionar pelo menos 1
+			item</span>
+		<h:dataTable id="exibeVagasValores" var="estacVeiculo"
+			class="tableList"
+			value="#{estacionamentoBean.listaEstacionamentoVeiculo}">
+
+			<h:column>
+				<f:facet name="header">
+						# Qtde. Vagas
+					</f:facet>  
+		           #{estacVeiculo.quantidadeVagas}
+		        </h:column>
+			<h:column>
+				<f:facet name="header">
+						Tipo Veiculo
+					</f:facet>  
+		            #{estacVeiculo.tipoVeiculo.descricao}
+		        </h:column>
+			<h:column>
+				<f:facet name="header">
+						Diaria R$
+					</f:facet>  
+		           R$ #{estacVeiculo.diaria}
+		        </h:column>
+
+			<h:column>
+				<f:facet name="header">
+						Mensal R$
+					</f:facet>  
+		            R$ #{estacVeiculo.mensal}
+		        </h:column>
+
+			<h:column>
+				<f:facet name="header">
+						Semestral R$
+					</f:facet>  
+		            R$ #{estacVeiculo.semestral}
+		        </h:column>
+
+
+			<h:column>
+				<f:facet name="header">
+					Ações
+					</f:facet>
+				<h:commandButton id="removeVagaEValor"
+					styleClass="fright btn btn-primary"
+					action="#{estacionamentoBean.removerEstacionamentoVeiculo}"
+					value="Delete">
+					<f:ajax execute="@this"
+						render=":form:idTabListVagasEValores :form:idAtualizaVagasValores" />
+					<f:setPropertyActionListener value="#{estacVeiculo}"
+						target="#{estacionamentoBean.estacionamentoVeiculo}"></f:setPropertyActionListener>
+				</h:commandButton>
+			</h:column>
+		</h:dataTable>
+		<h:commandButton value="Nova Vaga " styleClass="btn btn-primary"
+			type="button" onclick="abreModalValores()"
+			data-target="#modalVagaEValor" />
+	</h:panelGrid>
+
+</ui:composition>

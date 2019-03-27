@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+
+
+	<div class="modal fade" id="modalVagaEValor" role="dialog"
+		aria-live="polite">
+		<div class="modal-header">
+			<h3>Informações de Cadastro</h3>
+		</div>
+		<div class="modal-body">
+			<h:panelGrid header="Vagas e Valores">
+
+
+
+
+				<fieldset>
+
+					<h:panelGrid id="idAtualizaVagasValores" columns="2"
+						style="margin-bottom:10px">
+
+						<h:panelGrid id="groupQuantidade" styleClass="control-group">
+
+
+							<h:outputLabel value="Qtde. Vagas" for="idQuantVagas"
+								styleClass="control-label" />
+							<h:inputText id="idQuantVagas"
+								value="#{estacionamentoBean.estacionamentoVeiculo.quantidadeVagas}"
+								size="4" onblur="onBlurQuantidade();" />
+							<span class="help-inline" style="width: 230px; display: none;"
+								id="spanQuantidade">Informe a quantidade de Vagas</span>
+
+
+						</h:panelGrid>
+						<br />
+
+						<h:panelGrid id="groupTipoVeiculo" styleClass="control-group">
+							<h:outputLabel value="Tipo de Veiculo" styleClass="control-label" />
+							<h:selectOneMenu value="#{estacionamentoBean.tipoVeiculo.id}" onchange="onChangeTipoVeiculo();"
+								id="idTipoVeiculo">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems value="#{estacionamentoBean.listaTipoVeiculo}"
+									var="tipoVeiculo" itemLabel="#{tipoVeiculo.descricao}"
+									itemValue="#{tipoVeiculo.id}" />
+							</h:selectOneMenu>
+							<span class="help-inline" style="width: 230px; display: none;"
+								id="spanTipoVeiculo">Selecione um tipo de veiculo</span>
+						</h:panelGrid>
+						<br />
+						<h:panelGrid id="groupDiaria" styleClass="control-group">
+							<h:outputLabel value="Diaria R$" for="idValorDiaria" styleClass="control-label" />
+							<h:inputText id="idValorDiaria" styleClass="valorMonetario" onblur="onBlurValorDiario();"
+								value="#{estacionamentoBean.estacionamentoVeiculo.diaria}"
+								converter="realConveter" size="6">
+							</h:inputText>
+
+							<span class="help-inline" style="width: 230px; display: none;"
+								id="spanValorDiario">Informe o valor diario</span>
+						</h:panelGrid>
+						<br />
+
+						<h:panelGrid styleClass="control-group" id="groupMensal">
+							<h:outputLabel value="Mensal R$" for="idValorMensal"
+								styleClass="control-label" />
+							<h:inputText id="idValorMensal"
+								styleClass="valorMonetario" onblur="onBlurValorMensal();"
+								value="#{estacionamentoBean.estacionamentoVeiculo.mensal}"
+								converter="realConveter" size="6" />
+							<span class="help-inline" style="width: 230px; display: none;"
+								id="spanValorMensal">Informe o valor mensal</span>
+						</h:panelGrid>
+						<br />
+						<h:panelGrid styleClass="control-group" id="groupSemestral">
+							<h:outputLabel value="Semestral R$" for="idValorSemestral"
+								styleClass="control-label" />
+							<h:inputText id="idValorSemestral"
+								styleClass="valorMonetario" onblur="onBlurValorSemestral();"
+								value="#{estacionamentoBean.estacionamentoVeiculo.semestral}"
+								converter="realConveter" size="6" />
+							<span class="help-inline" style="width: 230px; display: none;"
+								id="spanValorSemestral">Informe o valor semestral</span>
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</fieldset>
+			</h:panelGrid>
+		</div>
+		<div class="modal-footer">
+			<h:commandButton id="incluirVagaEValor"
+				styleClass="fright btn btn-primary ico-plus"
+				action="#{estacionamentoBean.addEstacionamentoVeiculo}"
+				value="Incluir" onclick="validaVagasValores();">
+				<f:ajax execute="idAtualizaVagasValores"
+					render="idTabListVagasEValores idAtualizaVagasValores" />
+			</h:commandButton>
+		</div>
+	</div>
+</ui:composition>

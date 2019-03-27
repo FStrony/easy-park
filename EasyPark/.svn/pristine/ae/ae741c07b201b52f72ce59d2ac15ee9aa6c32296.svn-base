@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" class="colorOrange">
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>EasyPark</title>
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="locastyle.css" />
+	<h:outputScript library="js" name="jquery.min.js" />
+	<h:outputScript library="js" name="bootstrap.js" />
+	<h:outputScript library="js" name="locastyle.js" />
+
+	<ui:insert name="extraHeader"></ui:insert>
+</h:head>
+<h:body>
+	<f:loadBundle var="inter" basename="nls.internationalization"></f:loadBundle>
+
+	<!-- Cabeçalho do Sistema -->
+	<ui:insert name="header">
+		<h:form rendered="#{loginBean.logado}">
+			<div id="toolbar">
+				<div class="limitToolbar">
+					<h1 class="logoToolbar"></h1>
+					<h:commandLink styleClass="logOut" action="#{loginBean.logout}"
+						value="Sair" />
+					<span class="userName"> <strong>#{loginBean.empresa.email}</strong>
+						<h:commandLink
+							action="#{empresaBean.carregaPerfilEmpresa(loginBean.empresa.email)}"> Perfil da Empresa </h:commandLink>
+					</span>
+				</div>
+			</div>
+		</h:form>
+	</ui:insert>
+
+	<header class="headerPrincipal">
+	<div class="limite">
+		<h1 class="logoToolbar"></h1>
+		<h1 class="serviceName">
+			<a href="/EasyPark/xhtml/site/index.xhtml">EasyPark</a>
+		</h1>
+	</div>
+	<h:form>
+		<menu id="menuPrincipal" role="navigation">
+			<ul>
+				<li class="selected"><a role="menuitem" class="ico-home"
+					tabindex="2" href="/EasyPark/xhtml/site/index.xhtml">Página
+						inicial</a></li>
+				<ui:insert name="headerMenu">
+
+					<li class="parent"><h:commandLink
+							rendered="#{loginBean.logado}" role="menuitem" tabindex="2"
+							action="#">ESTACIONAMENTOS</h:commandLink>
+						<ul aria-expanded="false" aria-hidden="true">
+							<li><h:commandLink
+									action="/xhtml/administracao/empresa/estacionamento/novoEstacionamento?faces-redirect=true"
+									tabindex="2" role="menuitem" title="Incluir" value="Incluir"></h:commandLink></li>
+
+							<li><h:commandLink
+									action="/xhtml/administracao/empresa/estacionamento/listarEstacionamentos?faces-redirect=true"
+									tabindex="2" role="menuitem" title="Gerenciar"
+									value="Gerenciar"></h:commandLink></li>
+
+						</ul></li>
+					<li class="btMenu"><h:commandLink
+							action="/xhtml/site/instructionCad.xhtml"
+							value="Cadastre novos estacionamentos"
+							rendered="#{!loginBean.logado}" /></li>
+
+				</ui:insert>
+			</ul>
+		</menu>
+	</h:form> </header>
+
+	<!-- Corpo da Pagina -->
+
+	<div class="main" style="min-height: 72%;">
+		<div class="limit">
+			<br></br>
+			<ui:insert name="content" />
+		</div>
+	</div>
+
+
+	<!-- Rodapé do Sistema -->
+
+
+	<div class="subfooter" style="position: relative; bottom: 0px;">
+
+		<div class="limite">
+			<p class="copyRight fright">Copyright © 2013 Exception IT.</p>
+		</div>
+
+	</div>
+
+
+</h:body>
+</html>

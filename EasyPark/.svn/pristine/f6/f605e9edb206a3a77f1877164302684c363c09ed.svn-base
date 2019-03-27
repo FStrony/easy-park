@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "htth://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+<ui:define name="extraHeader">
+	<script type="text/javascript">
+		function carregaModal(){
+			$('#modalDetail').modal({show:true});
+		};
+	</script>
+</ui:define>
+	<ui:define name="content">
+
+		<h:form id="form">
+
+			<h1>#{inter.list_parking}</h1>
+
+			<h:dataTable id="estacionamentos" var="estac" class="tableList"
+				value="#{listaEstacionamentoBean.listaEstacionamento}">
+
+				<h:column>
+					<f:facet name="header">
+						#{inter.code}
+					</f:facet>  
+		            #{estac.id}  
+		        </h:column>
+				<h:column>
+					<f:facet name="header">
+						#{inter.name}
+					</f:facet>  
+		            #{estac.nome}  
+		        </h:column>
+
+				<h:column>
+					<f:facet name="header">
+						#{inter.website}
+					</f:facet>  
+		            #{estac.site}  
+		        </h:column>
+
+				<h:column>
+					<f:facet name="header">
+						#{inter.email}
+					</f:facet>  
+		            #{estac.email}  
+		        </h:column>
+
+
+				<h:column>
+					<f:facet name="header">
+						#{inter.actions}
+					</f:facet>
+					<h:commandLink
+						action="#{listaEstacionamentoBean.mostrarDetalhes(estac)}"
+						value="#{inter.details}" styleClass="ico ico-tabela" >
+							<f:ajax  onevent="carregaModal" execute="@form" render="@all"></f:ajax>
+						</h:commandLink>
+					&nbsp;
+					<h:commandLink
+						action="#{estacionamentoBean.editarEstacionamento(estac)}"
+						value="#{inter.edit}" styleClass="ico ico-pen"></h:commandLink>
+
+				</h:column>
+
+			</h:dataTable>
+
+			<ui:include src="wizard/janelaListagemDetalhes.xhtml" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

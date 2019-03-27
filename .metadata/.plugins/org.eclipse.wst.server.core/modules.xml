@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modules>
+  <module moduleId="org.eclipse.jst.jee.server:EasyPark_EJB" serverId="JBoss 7.1 Runtime 3 Server1381188891125"/>
+  <module moduleId="org.eclipse.jst.jee.server:EasyPark_EAR" serverId="JBoss 7.1 Runtime 3 Server1381188891125"/>
+  <module moduleId="org.eclipse.jst.jee.server:EasyPark"/>
+</modules>

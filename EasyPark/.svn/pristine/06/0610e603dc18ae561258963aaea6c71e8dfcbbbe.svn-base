@@ -1,0 +1,847 @@
+package br.com.easypark.mb;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.el.ELResolver;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.jboss.logging.Logger;
+
+import br.com.easypark.dao.EmpresaDAO;
+import br.com.easypark.dao.EstacionamentoDAO;
+import br.com.easypark.dao.EstacionamentoVeiculoDAO;
+import br.com.easypark.dao.HorarioDAO;
+import br.com.easypark.dao.PaisDAO;
+import br.com.easypark.dao.TelefoneDAO;
+import br.com.easypark.dao.TipoDiaDAO;
+import br.com.easypark.dao.TipoTelefoneDAO;
+import br.com.easypark.dao.TipoVeiculoDAO;
+import br.com.easypark.entity.Empresa;
+import br.com.easypark.entity.EnderecoEstacionamento;
+import br.com.easypark.entity.Estacionamento;
+import br.com.easypark.entity.EstacionamentoVeiculo;
+import br.com.easypark.entity.HorarioFuncionamento;
+import br.com.easypark.entity.Pais;
+import br.com.easypark.entity.Telefone;
+import br.com.easypark.entity.TipoDia;
+import br.com.easypark.entity.TipoTelefone;
+import br.com.easypark.entity.TipoVeiculo;
+import br.com.easypark.entity.Valor;
+import br.com.easypark.to.PeriodoTO;
+import br.com.easypark.to.TipoVeiculoTO;
+
+/**
+ * Esta classe tem por objetivo inserir, atualizar ou carregar o perfil da
+ * empresa
+ * 
+ * 
+ * @author ExceptionIT
+ * @since 20/07/2013
+ * @version 2.3
+ */
+
+@ManagedBean
+@ViewScoped
+public class EstacionamentoBean implements Serializable {
+
+	private Estacionamento estacionamento = new Estacionamento();
+	private EnderecoEstacionamento enderecoEstacionamento = new EnderecoEstacionamento();
+	private Telefone telefone = new Telefone();
+	private List<Telefone> listaTelefoneRemove = new ArrayList<Telefone>();
+	private List<Telefone> listaTelefoneAdd = new ArrayList<Telefone>();
+	private TipoTelefone tipoTelefone = new TipoTelefone();
+	private List<Telefone> listaTelefone = new ArrayList<Telefone>();
+	private List<TipoTelefone> listaTiposTelefones;
+	private List<TipoDia> listaTipoDia;
+	private TipoDia tipoDia = new TipoDia();
+	private HorarioFuncionamento horarioFuncionamento = new HorarioFuncionamento();
+	private List<HorarioFuncionamento> listaHorarioFuncionamento = new ArrayList<HorarioFuncionamento>();
+	private List<HorarioFuncionamento> listaHorarioRemove = new ArrayList<HorarioFuncionamento>();
+	private List<HorarioFuncionamento> listaHorarioAdd = new ArrayList<HorarioFuncionamento>();
+	private TipoVeiculo tipoVeiculo = new TipoVeiculo();
+	private List<TipoVeiculo> listaTipoVeiculo;
+	private EstacionamentoVeiculo estacionamentoVeiculo = new EstacionamentoVeiculo();
+	private List<EstacionamentoVeiculo> listaEstacionamentoVeiculo = new ArrayList<EstacionamentoVeiculo>();
+	private List<EstacionamentoVeiculo> listaEVRemove = new ArrayList<EstacionamentoVeiculo>();
+	private List<EstacionamentoVeiculo> listaEVAdd = new ArrayList<EstacionamentoVeiculo>();
+	
+	private List<Valor> listaValores = new ArrayList<Valor>();
+	private Valor valor = new Valor();
+	private List<Pais> listaPaises;
+	private Pais pais;
+	// 0 nÃ£o tem seguro 1 tem seguro
+	private int isSeguro;
+	private String horarioFuncionamentoInicio;
+	private String horarioFuncionamentoFim;
+	private String cep;
+	private String logradouroEstacionamento = new String();
+	private boolean isDialogVisible = true;
+
+	private Long idEdit;
+
+	private List<PeriodoTO> listaPeriodoTO = new ArrayList<PeriodoTO>();
+	private List<TipoVeiculoTO> listTipoVeiculoTO = new ArrayList<TipoVeiculoTO>();
+
+	@EJB
+	private TipoTelefoneDAO tipoTelefoneDAO;
+	@EJB
+	private PaisDAO paisDAO;
+	@EJB
+	private TipoDiaDAO tipoDiaDAO;
+	@EJB
+	private TipoVeiculoDAO tipoVeiculoDAO;
+
+	@EJB
+	private EstacionamentoDAO estacionamentoDAO;
+
+	@EJB
+	private EmpresaDAO empresaDAO;
+
+	@EJB
+	private TelefoneDAO telefoneDAO;
+
+	@EJB
+	private HorarioDAO horarioDAO;
+
+	@EJB
+	private EstacionamentoVeiculoDAO estacionamentoVeiculoDAO;
+
+	private static Logger logger = Logger.getLogger(EstacionamentoBean.class
+			.getName());
+
+	/**
+	 * O objetivo deste metodo e oferecer a base para editar o estacionamento
+	 * realizando busca e inserindo alguns valores
+	 * 
+	 * @param estacionamento
+	 *            variavel do tipo Estacionamento que recebe os valores do
+	 *            estacionamento
+	 * @param estacionamentoDAO
+	 *            variavel do tipo EstacionamentoDAO que vai ser utilizada para
+	 *            metodos de busca
+	 * @param listaTelefone
+	 *            variavel que recebe uma lista de telefones do estacionamento
+	 * @param listaEstacionamentoVeiculo
+	 *            variavel que recebe uma lista de valores do veiculo
+	 * @param listaHorarioFuncionamento
+	 *            variavel que recebe uma lista do horario de funcionamento do
+	 *            estacionamento
+	 * @exception se
+	 *                o FacesContext for igual a nulo retorna idEdit recebe nulo
+	 */
+
+	@PostConstruct
+	public void inicializar() {
+
+		if (FacesContext.getCurrentInstance().getExternalContext()
+				.getRequestParameterMap().get("id") != null) {
+			this.idEdit = Long.parseLong(FacesContext.getCurrentInstance()
+					.getExternalContext().getRequestParameterMap().get("id"));
+		} else {
+			this.idEdit = null;
+		}
+
+		if (idEdit != null) {
+			estacionamento = estacionamentoDAO.searchByID(idEdit);
+			estacionamento.setEstacionamentoVeiculo(estacionamentoVeiculoDAO
+					.buscarVeiculosPorEstacionamento(estacionamento));
+			estacionamento.setHorariosFuncionamento(horarioDAO
+					.buscarHorariosPorEstacionamento(estacionamento));
+			estacionamento.setTelefones(telefoneDAO
+					.buscarTelefonesPorEstacionamento(estacionamento));
+
+			this.setEstacionamento(estacionamento);
+
+			setEnderecoEstacionamento(this.estacionamento
+					.getEnderecoEstacionamento());
+			listaTelefone = this.estacionamento.getTelefones();
+			listaEstacionamentoVeiculo = this.estacionamento
+					.getEstacionamentoVeiculo();
+			listaHorarioFuncionamento = this.estacionamento
+					.getHorariosFuncionamento();
+		}
+
+	}
+
+	public Estacionamento getEstacionamento() {
+		return estacionamento;
+	}
+
+	public void setEstacionamento(Estacionamento estacionamento) {
+		this.estacionamento = estacionamento;
+	}
+
+	/**
+	 * O objetivo deste metodo e editar o estacionamento
+	 * 
+	 * @param idEdit
+	 *            variavel para com parameto do facescontex para editar
+	 * @return retorna para a pagina de editar
+	 */
+
+	public String editarEstacionamento(Estacionamento estacionamento) {
+		System.out.println("TESTE editarEstacionamento :" + idEdit);
+		return "editarEstacionamento?faces-redirect=true&id=" + idEdit;
+	}
+
+	/**
+	 * O objetivo deste metodo e instanciar um novo estacionamento e limpar
+	 * todos os seus atributos
+	 * 
+	 * @param estacionamento
+	 *            variavel com um novo estacionamento
+	 * @param cep
+	 *            variavel com um valor em branco
+	 * @param lisTelefone
+	 *            variavel uma nova lista de telefones
+	 * @param listaHorarioFuncionamento
+	 *            variavel com uma nova lista de horario de funcionamento
+	 * @param listaEstacionamentoVeiculo
+	 *            variavel com uma nova lista de veiculos
+	 */
+
+	public void cleanForm() {
+
+		this.estacionamento = new Estacionamento();
+		this.cep = "";
+		listaTelefone = new ArrayList<Telefone>();
+		listaHorarioFuncionamento = new ArrayList<HorarioFuncionamento>();
+		listaEstacionamentoVeiculo = new ArrayList<EstacionamentoVeiculo>();
+	}
+
+	/**
+	 * O objetivo deste metodo e criar novos valores para a Empresa e popula-la
+	 * 
+	 * @exception se a empresa for diferente de nulo e realiza insercao do
+	 *                estacionamento ou a sua atualizacao
+	 * @exception se a empresa for nula retorna para o pagina de login
+	 * @return retorna uma lista de estacionamentos
+	 */
+
+	public String save() {
+
+		logger.info("Iniciando a transacao");
+
+		// Populando a Empresa
+		FacesContext c = FacesContext.getCurrentInstance();
+		ELResolver r = c.getApplication().getELResolver();
+		LoginBean loginBean = (LoginBean) r.getValue(c.getELContext(), null,
+				"loginBean");
+		Empresa emp = empresaDAO.getEmpresa(loginBean.getEmpresa().getEmail());
+
+		if (emp != null) {
+
+			System.out.println("ID EDIT:" + idEdit);
+
+			boolean isEdit = false;
+			System.out.println("Id Estacionamento Edit:"
+					+ estacionamento.getId());
+			if (estacionamento.getId() != null && estacionamento.getId() != 0) {
+				isEdit = true;
+			}
+			
+			this.estacionamento.setEmpresa(emp);
+			
+			Pais pais1 = paisDAO.searchByID(1L);
+			enderecoEstacionamento.setPais(pais1);
+
+			this.enderecoEstacionamento.setEstacionamento(this.estacionamento);
+			this.enderecoEstacionamento.setLatitude(enderecoEstacionamento.getLatitude());
+			this.enderecoEstacionamento.setLongitude(enderecoEstacionamento.getLongitude());
+			this.estacionamento.setEnderecoEstacionamento(this.enderecoEstacionamento);
+			
+			
+			if (getIsSeguro() == 1) {
+				this.estacionamento.setIsSeguro(true);
+			} else {
+				this.estacionamento.setIsSeguro(false);
+			}
+			
+			if (isEdit) {
+				for (EstacionamentoVeiculo evRemove : listaEVRemove) {
+					if (evRemove.getId() != null) {
+						EstacionamentoVeiculo evBD = estacionamentoVeiculoDAO
+								.searchByID(evRemove.getId());
+						if (evBD != null) {
+							logger.info("ID estacionamento Veiculo REMOVER: "
+									+ evBD.getId());
+							estacionamentoVeiculoDAO.removeById(evBD.getId());
+						}
+					}
+				}
+				System.out.println("Qyabtudade de EstacionamentoVeiculo= ================= "+listaEVAdd.size());
+				for (EstacionamentoVeiculo evAdd : listaEVAdd) {
+					evAdd.setEstacionamento(this.estacionamento);
+					estacionamento.addEstacionamentoVeiculo(evAdd);
+				}
+				
+				for (Telefone telRemove : listaTelefoneRemove) {
+					if (telRemove.getId() != null) {
+						Telefone telBD = telefoneDAO.searchByID(telRemove
+								.getId());
+						if (telBD != null) {
+							logger.info("ID TELEFONE REMOVER TESTE: " + telBD.getId());
+							telefoneDAO.removeTelefone(telBD.getId());
+							//telefoneDAO.remove(telBD);
+						}
+						logger.info("Removendo telefones: " + telRemove.getId());
+					}
+					for (Telefone telAdd : listaTelefoneAdd) {
+						telAdd.setEstacionamento(this.estacionamento);
+						estacionamento.addTelefoneEstacionamento(telAdd);
+					}
+					
+				}
+				
+				for (HorarioFuncionamento hfRemove : listaHorarioRemove) {
+					if (hfRemove.getId() != null) {
+						HorarioFuncionamento hfBD = horarioDAO
+								.searchByID(hfRemove.getId());
+						if (hfBD != null) {
+							logger.info("ID HORARIO REMOVER: " + hfBD.getId());
+							horarioDAO.removeById(hfBD.getId());
+
+						}
+						logger.info("Removendo Horario funcionamento");
+					}
+				}
+				for (HorarioFuncionamento hfAdd : listaHorarioAdd) {
+					hfAdd.setEstacionamento(this.estacionamento);
+					estacionamento.addHorarioFuncionamento(hfAdd);
+				}
+				
+				estacionamentoDAO.update(estacionamento);
+				
+			}else{
+					
+	
+					for (PeriodoTO p : listaPeriodoTO) {
+						for (TipoVeiculoTO tvTO : p.getTipoVeiculoTO()) {
+							Valor v = new Valor();
+							v.setEstacionamento(estacionamento);
+							v.setHora(tvTO.getValor());
+		
+							v.setTipoDia(tipoDiaDAO.searchByID(p
+									.getIdHorarioFuncionamento()));
+							v.setTipoVeiculo(tipoVeiculoDAO.searchByID(tvTO.getId()));
+							listaValores.add(v);
+						}
+					}
+		
+					this.estacionamento.setValores(listaValores);
+					
+					for(EstacionamentoVeiculo estacionamentoVeiculo : listaEstacionamentoVeiculo){
+						estacionamentoVeiculo.setEstacionamento(this.estacionamento);
+						estacionamento.addEstacionamentoVeiculo(estacionamentoVeiculo);
+					}
+		
+					for(Telefone telfone : listaTelefone){
+						telefone.setEstacionamento(this.estacionamento);
+						estacionamento.addTelefoneEstacionamento(telfone);
+					}
+					
+					for(HorarioFuncionamento hf : this.listaHorarioFuncionamento){
+						hf.setEstacionamento(this.estacionamento);
+						estacionamento.addHorarioFuncionamento(hf);
+					}
+					
+					estacionamentoDAO.insert(estacionamento);
+			}
+			
+			this.cleanForm();
+			logger.info("Transacao Finalizada");
+
+			return "listarEstacionamentos";
+		} else {
+			return "login";
+		}
+
+	}
+
+	public List<Telefone> getListaTelefoneAdd() {
+		return listaTelefoneAdd;
+	}
+
+	public void setListaTelefoneAdd(List<Telefone> listaTelefoneAdd) {
+		this.listaTelefoneAdd = listaTelefoneAdd;
+	}
+
+	public int getIsSeguro() {
+		return isSeguro;
+	}
+
+	public void setIsSeguro(int isSeguro) {
+		this.isSeguro = isSeguro;
+	}
+
+	public EnderecoEstacionamento getEnderecoEstacionamento() {
+		return enderecoEstacionamento;
+	}
+
+	public void setEnderecoEstacionamento(
+			EnderecoEstacionamento enderecoEstacionamento) {
+		this.enderecoEstacionamento = enderecoEstacionamento;
+	}
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+
+	public Telefone getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(Telefone telefone) {
+		this.telefone = telefone;
+	}
+
+	public List<Telefone> getListaTelefone() {
+		return listaTelefone;
+	}
+
+	/**
+	 * O objetivo deste metodo e adicionar telefone
+	 * 
+	 * @param msg
+	 *            variavel usada para retornar mensagens
+	 * @param telefone
+	 *            varaivel do tipo Telefone
+	 * @param tipoTelefoneDAO
+	 *            varialvel do tipo TipoTelefoneDAO usada para realizar buscas
+	 * @param adicionado
+	 *            variavel do tipo boolean usada para verificar se a lista de
+	 *            telefone existe para inserir valores nela
+	 * @param tipoTelefone
+	 *            variavel do tipo TipoTelefone
+	 * @param listaTelefoneAdd
+	 *            variavel em que sao adicionados telefones
+	 * @exception se
+	 *                o telefone for nula retorna uma mensagem de erro caso ao
+	 *                contrario cria uma lista de telefone
+	 * @return retorna uma lista de estacionamentos
+	 */
+
+	public void addTelefone() {
+		FacesMessage msg = null;
+		if (telefone != null) {
+
+			TipoTelefone recuperadoTipoTelefone = tipoTelefoneDAO
+					.searchByID(this.tipoTelefone.getId());
+			this.telefone.setTipoTelefone(recuperadoTipoTelefone);
+			boolean adicionado = this.listaTelefone.add(this.telefone);
+			if (adicionado == true) {
+				listaTelefoneAdd.add(this.telefone);
+				this.telefone = new Telefone();
+				this.tipoTelefone = new TipoTelefone();
+				invisibleDialog();
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Sucesso",
+						"Incluido com Sucesso!");
+			} else {
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha",
+						"Falha ao Adicionar o telefone!");
+			}
+
+		} else {
+			System.out.println("Telefones estï¿½o nullo");
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	/**
+	 * O objetivo deste metodo e confirmar se o estacionamento esta preenchido
+	 */
+
+	public void tabConfirmacao() {
+		System.out.println("TESTE AJAX! NOME ESTACIONAMENTO: "
+				+ estacionamento.getNome());
+		System.out.println("TESTE AJAX! Site ESTACIONAMENTO: "
+				+ estacionamento.getSite());
+	}
+
+	/**
+	 * O objetivo deste metodo e remover o telefone da lista
+	 * 
+	 * @param listaTelefoneAdd
+	 *            variavel que contem a lista de telefone
+	 */
+
+	public void removerTelefone() {
+		System.out.println("Remove Telefone: " + telefone.getNumero());
+		
+		if(this.telefone.getId() != null){
+			System.out.println("ID TELEFONE: " + telefone.getId());
+			this.listaTelefoneRemove.add(telefone);
+			if (this.listaTelefoneAdd.contains(telefone))
+				this.listaTelefoneAdd.remove(telefone);
+		}
+
+		this.listaTelefone.remove(telefone);
+
+		this.telefone = new Telefone();
+	}
+
+	public List<TipoTelefone> getListaTiposTelefones() {
+		if (listaTiposTelefones == null) {
+			this.listaTiposTelefones = tipoTelefoneDAO.buscarTodos();
+		}
+		return listaTiposTelefones;
+	}
+
+	public List<Pais> getListaPaises() {
+		if (listaPaises == null) {
+			this.listaPaises = paisDAO.buscarTodos();
+		}
+		return listaPaises;
+	}
+
+	public TipoTelefone getTipoTelefone() {
+		return tipoTelefone;
+	}
+
+	public void setTipoTelefone(TipoTelefone tipoTelefone) {
+		this.tipoTelefone = tipoTelefone;
+	}
+
+	public List<TipoDia> getListaTipoDia() {
+		if (listaTipoDia == null) {
+			this.listaTipoDia = tipoDiaDAO.buscarTodos();
+		}
+		return listaTipoDia;
+	}
+
+	public TipoDia getTipoDia() {
+		return tipoDia;
+	}
+
+	public void setTipoDia(TipoDia tipoDia) {
+		this.tipoDia = tipoDia;
+	}
+
+	public HorarioFuncionamento getHorarioFuncionamento() {
+		return horarioFuncionamento;
+	}
+
+	public void setHorarioFuncionamento(
+			HorarioFuncionamento horarioFuncionamento) {
+		this.horarioFuncionamento = horarioFuncionamento;
+	}
+
+	public TipoVeiculo getTipoVeiculo() {
+		return tipoVeiculo;
+	}
+
+	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
+		this.tipoVeiculo = tipoVeiculo;
+	}
+
+	public List<TipoVeiculo> getListaTipoVeiculo() {
+		if (this.listaTipoVeiculo == null) {
+			this.listaTipoVeiculo = tipoVeiculoDAO.buscarTodos();
+		}
+		return listaTipoVeiculo;
+	}
+
+	public EstacionamentoVeiculo getEstacionamentoVeiculo() {
+		return estacionamentoVeiculo;
+	}
+
+	public void setEstacionamentoVeiculo(
+			EstacionamentoVeiculo estacionamentoVeiculo) {
+		this.estacionamentoVeiculo = estacionamentoVeiculo;
+	}
+
+	public List<EstacionamentoVeiculo> getListaEstacionamentoVeiculo() {
+		return listaEstacionamentoVeiculo;
+	}
+
+	/**
+	 * O objetivo deste metodo e adicionar valores sobre o veiculo que pode ser
+	 * estacionado
+	 * 
+	 * @param tipoVeiculoDAO
+	 *            variavel do tipo TipoVeiculoDAO usada para realizar buscas
+	 * @param adicionado
+	 *            variavel do tipo boolean usada para se existe a lista de tipo
+	 *            veiculo
+	 * @param estacionamentoVeiculo
+	 *            variavel para criar um novo tipo veiculo no estacionamento
+	 * @exception se
+	 *                existir a lista ele insere os valores caso contrario
+	 *                retorna uma mensagem de erro
+	 */
+
+	public void addEstacionamentoVeiculo() {
+
+		TipoVeiculoTO to = new TipoVeiculoTO();
+
+		// verifica campos monetarios
+		if (validaCamposMonetarios()) {
+			FacesMessage msg = null;
+			TipoVeiculo recuperadoTipoVeiculo = tipoVeiculoDAO
+					.searchByID(this.tipoVeiculo.getId());
+			this.estacionamentoVeiculo.setTipoVeiculo(recuperadoTipoVeiculo);
+			boolean adicionado = this.listaEstacionamentoVeiculo
+					.add(this.estacionamentoVeiculo);
+			System.out.println("Adicionado");
+			if (adicionado == true) {
+				listaEVAdd.add(estacionamentoVeiculo);
+				for (TipoVeiculo tv : listaTipoVeiculo) {
+					if (tv.getId() == recuperadoTipoVeiculo.getId()) {
+						this.listaTipoVeiculo.remove(tv);
+						break;
+					}
+				}
+
+				to.setDescricao(recuperadoTipoVeiculo.getDescricao());
+				to.setId(recuperadoTipoVeiculo.getId());
+
+				this.estacionamentoVeiculo = new EstacionamentoVeiculo();
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Sucesso",
+						"Incluido com Sucesso!");
+			} else {
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha",
+						"Falha ao Adicionar o Tipo de Veiculo!");
+			}
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		listTipoVeiculoTO.add(to);
+
+	}
+
+	/**
+	 * O objetivo deste metodo e remover valores sobre o veiculo que pode ser
+	 * estacionado
+	 * 
+	 * @param listaEstacionamentoVeiculo
+	 *            lista que o tipo veiculo vai ser removido
+	 * @param listTipoVeiculoTO
+	 *            lista que o tipo veiculo vai ser removido
+	 * @param listaTipoVeiculo
+	 *            lista que adicionado o tipo de veiculo(carro, moto, caminhao)
+	 *            porque as informacoes do tipo de veiculo podem ser removidas
+	 *            mas o tipo de veiculo e fixo
+	 */
+
+	public void removerEstacionamentoVeiculo() {
+		System.out.println("Removeu o Estacionamento Veiculo");
+		this.listaEstacionamentoVeiculo.remove(estacionamentoVeiculo);
+		this.listTipoVeiculoTO.remove(estacionamentoVeiculo);
+		this.listaTipoVeiculo.add(estacionamentoVeiculo.getTipoVeiculo());
+		this.listaEVRemove.add(estacionamentoVeiculo);
+	}
+
+	public Valor getValor() {
+		return valor;
+	}
+
+	public void setValor(Valor valor) {
+		this.valor = valor;
+	}
+
+	/**
+	 * O objetivo deste metodo e adicionar horario de funcionamento
+	 * @param tipodiaDAO variavel do tipo TipoDiaDAO usada para realizar consultas
+	 * @param recuperadoTipoDia variavel que recebe o tipo dia atraves da busca pelo codigo do tipo dia
+	 * @param horarioFuncionamento variavel do tipo HorarioFuncionamento que recebe o tipo do dia, horario de funcionamento inicial e final
+	 * @param listaHorarioFuncionamento lista que recebe a variavel horarioFuncionamento
+	 * @param periodoTO variavel onde sao armazenadas as informacoes do horario de funcionamento
+	 * @param listaPeriodoTO uma lista com todos os horarios de funcionamentos
+	 */
+
+
+	public void addHorarioFuncionamento() {
+
+		PeriodoTO periodoTO = new PeriodoTO();
+
+		TipoDia recuperadoTipoDia = tipoDiaDAO.searchByID(this.tipoDia.getId());
+		this.horarioFuncionamento.setTipoDia(recuperadoTipoDia);
+		this.horarioFuncionamento
+				.setHorarioFuncionamentoInicio(horarioFuncionamentoInicio);
+		this.horarioFuncionamento
+				.setHorarioFuncionamentoFinal(horarioFuncionamentoFim);
+		this.listaHorarioFuncionamento.add(this.horarioFuncionamento);
+		// Renan Costa para editar
+		listaHorarioAdd.add(this.horarioFuncionamento);
+		for (TipoDia td : listaTipoDia) {
+			if (td.getId() == recuperadoTipoDia.getId()) {
+				this.listaTipoDia.remove(td);
+				break;
+			}
+		}
+
+		this.horarioFuncionamentoFim = new String();
+		this.horarioFuncionamentoInicio = new String();
+		this.horarioFuncionamento = new HorarioFuncionamento();
+		this.tipoDia = new TipoDia();
+
+		periodoTO.setDescricaoHorarioFuncionamento(recuperadoTipoDia
+				.getDescricao());
+		periodoTO.setIdHorarioFuncionamento(recuperadoTipoDia.getId());
+		periodoTO.setTipoVeiculoTO(listTipoVeiculoTO);
+
+		listaPeriodoTO.add(periodoTO);
+
+	}
+
+	/**
+	 * O objetivo deste metodo e remover o horario de funcionamento de uma lista
+	 * @param listaHorarioFuncionamento e a lista do horario de funcionamento do estacionamento
+	 * @param horarioFuncionamento variavel que tem as informacoes do horario de funcionamento
+	 * @param listaPerioTO lista com os horarios de funcionamento
+	 * @param listaTipoDia lista com o tipo de dia de funcionamento, as informacoes do horario de funciomanto sao removidas mas o tipo dia e fixo(feriado, dia util, final de semana)
+	 *@exception se na lista listaHorarioAdd tiver o horario de funcionamento que deseja ser removido ele sera removido
+	 */
+
+	
+	public void removeHorarioFuncionamento() {
+		this.listaHorarioFuncionamento.remove(horarioFuncionamento);
+		listaPeriodoTO.remove(horarioFuncionamento);
+		this.listaTipoDia.add(horarioFuncionamento.getTipoDia());
+
+		this.listaHorarioRemove.add(horarioFuncionamento);
+
+		if (listaHorarioAdd.contains(this.horarioFuncionamento))
+			listaHorarioAdd.remove(this.horarioFuncionamento);
+
+	}
+
+	public List<HorarioFuncionamento> getListaHorarioFuncionamento() {
+		return listaHorarioFuncionamento;
+	}
+
+	public String getHorarioFuncionamentoInicio() {
+		return horarioFuncionamentoInicio;
+	}
+
+	public void setHorarioFuncionamentoInicio(String dataFuncionamentoInicio) {
+		this.horarioFuncionamentoInicio = dataFuncionamentoInicio;
+	}
+
+	public String getHorarioFuncionamentoFim() {
+		return horarioFuncionamentoFim;
+	}
+
+	public void setHorarioFuncionamentoFim(String dataFuncionamentoFim) {
+		this.horarioFuncionamentoFim = dataFuncionamentoFim;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouroEstacionamento() {
+		return logradouroEstacionamento;
+	}
+
+	public void setLogradouroEstacionamento(String logradouroEstacionamento) {
+		this.logradouroEstacionamento = logradouroEstacionamento;
+	}
+
+	/**
+	 * O objetivo deste metodo e adicionar valor por hora ao estacionamento
+	 * @param listaValores e a lista onde os valores serao adicionados
+	 * @param valor variavel do tipo Valor que contem as informacoes do valor/hora do estacionamento
+	 */
+
+	public void addValorEstacionamentoPorHora() {
+		listaValores.add(this.valor);
+		this.valor = new Valor();
+	}
+
+	public List<Valor> getValores() {
+		return this.listaValores;
+	}
+
+	/**
+	 * O objetivo deste metodo e criar uma caixa de dialogo
+	 * @return retorna uma caixa de dialogo 
+	 */
+
+	public boolean isDialogVisible() {
+		return this.isDialogVisible;
+	}
+
+
+	/**
+	 * O objetivo deste metodo e deixar a caixa de dialogo ativa
+	 */
+	
+	public void visibleDialog() {
+		this.isDialogVisible = true;
+		logger.info("isVisible = true");
+	}
+
+	/**
+	 * O objetivo deste metodo e deixar a caixa de dialogo inativa
+	 */
+	
+	public void invisibleDialog() {
+		this.isDialogVisible = false;
+		logger.info("isVisible = false");
+	}
+	
+	/**
+	 * O objetivo deste metodo e validar se os campos de valor da diaria, mensal ou semestral estão na forma monetaria
+	 * @param msg variavel do tipo FacesContex usada para retornar uma mensagem
+	 * @param estacionamentoVeioculo varialvel do tipo EstacionamentoVeiculo que contem os valores que vao ser usados para validar
+	 * @exception se os campos de diaria, mensal ou semestral nao estiverem dentro do estabelecido retorna uma mensagem de erro
+	 * @return true
+	 */
+
+
+	public boolean validaCamposMonetarios() {
+		FacesMessage msg = null;
+		if (this.estacionamentoVeiculo.getDiaria().compareTo(
+				this.estacionamentoVeiculo.getMensal()) == 1
+				|| this.estacionamentoVeiculo.getDiaria().compareTo(
+						this.estacionamentoVeiculo.getSemestral()) == 1
+				|| this.estacionamentoVeiculo.getMensal().compareTo(
+						this.estacionamentoVeiculo.getSemestral()) == 1) {
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Valores Incorretos", "Valores incorretos!");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return false;
+		}
+		return true;
+	}
+
+	public List<TipoVeiculoTO> getListTipoVeiculoTO() {
+		return listTipoVeiculoTO;
+	}
+
+	public void setListTipoVeiculoTO(List<TipoVeiculoTO> listTipoVeiculoTO) {
+		this.listTipoVeiculoTO = listTipoVeiculoTO;
+	}
+
+	public List<PeriodoTO> getListaPeriodoTO() {
+		return listaPeriodoTO;
+	}
+
+	public void setListaPeriodoTO(List<PeriodoTO> listaPeriodoTO) {
+		this.listaPeriodoTO = listaPeriodoTO;
+	}
+
+	public Long getIdEdit() {
+		return idEdit;
+	}
+
+	public void setIdEdit(Long idEdit) {
+		this.idEdit = idEdit;
+	}
+
+}

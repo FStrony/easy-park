@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+
+
+	<div class="modal fade" id="modalDetail" role="dialog"
+		aria-live="polite">
+		<h:panelGrid id="telefonePart1" columns="2">
+			<p>
+				<h:panelGrid id="groupTipoTelefone" styleClass="control-group">
+					<h:outputLabel value="Tipo de Telefone" styleClass="control-label" />
+					<h:selectOneMenu id="idTipoTelefone" rendered="true"
+						value="#{estacionamentoBean.tipoTelefone.id}"
+						onchange="onChangeTipoTelefone();">
+						<f:selectItem itemValue="0" itemLabel="Selecione..." />
+						<f:selectItems
+							value="#{estacionamentoBean.listaTiposTelefones}"
+							var="tipoTelefone" itemLabel="#{tipoTelefone.descricao}"
+							itemValue="#{tipoTelefone.id}" />
+					</h:selectOneMenu>
+					<span class="help-inline" style="width: 230px; display: none;"
+						id="spanTipoTelefone">Selecione o tipo de Telefone</span>
+				</h:panelGrid>
+
+			</p>
+
+		</h:panelGrid>
+
+		<h:panelGrid id="telefonePart2" columns="3">
+			<h:panelGrid id="groupTelefone" styleClass="control-group">
+				<h:outputLabel for="idNumTelefone" value="Telefone"
+					styleClass="control-label" />
+				<h:column>
+					<h:inputText id="idNumeroDDD"
+						value="#{estacionamentoBean.telefone.ddd}"
+						style="width:24px;" maxlength="2"
+						onblur="onBlurTelefoneDD();" />
+					<h:inputText id="idNumTelefone" maxlength="9" size="10" style="margin-left: 3px;" value="#{estacionamentoBean.telefone.numero}"
+						onblur="onBlurTelefoneDD();" />
+
+					<h:commandButton value="Adicionar" id="addTelefone"
+						styleClass="fRight btn btn-primary" style="margin-left: 5px"
+						action="#{estacionamentoBean.addTelefone}"
+						onclick="validaTelefone();">
+						<f:ajax execute="idNumeroDDD idNumTelefone idTipoTelefone"
+							render="exibeTelefones" />
+					</h:commandButton>
+
+				</h:column>
+				<span class="help-inline" style="width: 230px; display: none;"
+					id="spanTelefone">Digite o telefone</span>
+			</h:panelGrid>
+
+
+		</h:panelGrid>
+
+	</div>
+</ui:composition>

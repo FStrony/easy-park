@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+	<ui:define name="extraHeader">
+		<h:outputScript library="js" name="maskedinput-1.1.2.pack.js" />
+		<h:outputScript library="js" name="cadEmpresaValidations.js" />
+
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="boxGray" role="region"
+			style="width: 350px; padding-bottom: 2px; padding-left: 20px; padding-top: 10px; padding-right: 25px; margin-left: 30%; margin-top: 3%">
+			<h:form id="formCadEstac">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="/resources/img/cadastro.png" width="50"
+						height="60" />
+					<h1>Cadastro de Empresa</h1>
+				</h:panelGrid>
+
+				<fieldset>
+					<div>
+						<br />
+						<h3 class="titleContent" role="presentation">Informações
+							Pessoais</h3>
+						<p></p>
+						<div>
+
+							<h:panelGrid columns="2">
+								<h:panelGrid styleClass="control-group" id="groupEmail">
+									<h:outputLabel value="Email" for="idEmail"
+										styleClass="control-label" />
+									<h:inputText value="#{empresaBean.empresa.email}" size="40"
+										required="true" id="idEmail" onblur="onBlurEmail();" />
+									<span class="help-inline" style="width: 206px; display: none;"
+										id="spanEmail">Informe um email valido</span>
+								</h:panelGrid>
+								<h:column></h:column>
+								<h:panelGrid styleClass="control-group" id="groupCNPJ">
+									<h:outputLabel value="CNPJ" for="idCnpj"
+										styleClass="control-label" />
+									<h:inputText id="idCnpj" value="#{empresaBean.empresa.cnpj}"
+										size="25" required="true" converter="convertInput"
+										onblur="onBlurCnpj();" />
+									<span class="help-inline" style="width: 206px; display: none;"
+										id="spanCnpj">Informe o CNPJ</span>
+								</h:panelGrid>
+								<h:column></h:column>
+								<h:panelGrid styleClass="control-group" id="groupSenha">
+									<h:column>
+										<h:outputLabel value="Senha" for="idSenha"
+											styleClass="control-label" />
+										<h:inputSecret value="#{empresaBean.empresa.senha}" size="25"
+											required="true" id="idSenha" onblur="onBlurSenha();" />
+										<h:commandButton styleClass="fRight btn btn-primary"
+											style="margin-left: 5px" action="#{empresaBean.inserir}"
+											value="Incluir" >
+											<f:ajax execute="idEmail idCnpj idSenha"></f:ajax>
+										</h:commandButton>
+										<span class="help-inline" style="width: 206px; display: none;"
+											id="spanSenha">Informe a Senha</span>
+
+									</h:column>
+								</h:panelGrid>
+
+							</h:panelGrid>
+						</div>
+					</div>
+				</fieldset>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+
+	<ui:define name="header"></ui:define>
+	<ui:define name="headerMenu"></ui:define>
+	<ui:define name="content">
+		<h:form>
+			<div class="boxGray" role="region"
+				style="width: 1000px; margin-left: 100px;">
+				<h2 class="titleContent" role="presentation">Primeiros passos</h2>
+				<p>Para realizar o cadastro de novos estacionamentos é
+					necessario que cadastre a sua empresa. Caso já tenha se cadastrado
+					anteriormente apenas efetue o login.</p>
+				<p>Obs: O cadastramento de estacionamento é realizado
+					exclusivamente por pessoas jurídicas.</p>
+				<div class="shortcutBox expandBox microBox">
+					<div>
+						<a title="Cadastre sua empresa." tabindex="2"
+							href="/EasyPark/xhtml/site/empresa/cadastroEmpresa.xhtml">
+							<h3 class="chamaicon-addcontact">
+								<span class="shortcutTitle"> Cadastre sua empresa </span>
+							</h3>
+						</a>
+					</div>
+					<div>
+						<a title="Efetue o Login." tabindex="2"
+							href="/EasyPark/xhtml/administracao/login.xhtml">
+							<h3 class="ico-login">
+								<span class="shortcutTitle"> Login </span>
+							</h3>
+						</a>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

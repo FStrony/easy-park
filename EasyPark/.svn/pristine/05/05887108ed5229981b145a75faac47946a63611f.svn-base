@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<ui:composition template="/xhtml/template/_easyparkTemplate.xhtml">
+	<ui:define name="header"></ui:define>
+	<ui:define name="extraHeader">
+		<h:outputScript library="js" name="loginValidations.js" />
+
+	</ui:define>
+	<ui:define name="headerMenu"></ui:define>
+	<ui:define name="content">
+
+
+		<h:form id="formLogin" onsubmit="validaLogin();showMessage();">
+			<br />
+			<div role="region" class="boxGray"
+				style="margin-left: 400px; width: 380px; height: 230px;">
+				<h2 role="presentation" class="titleContent">#{inter.info_pageLogin}</h2>
+
+				<div class="shortcutBox expandBox">
+
+					<h:panelGrid id="panelLogin" header="Login">
+						<h:panelGrid columns="2" style="margin-left:40px; ">
+
+
+							<h:panelGrid styleClass="control-group" id="LoginEmailGroup">
+								<h:outputLabel for="email" value="#{inter.email}"
+									styleClass="control-label" />
+								<h:inputText id="email" required="true"
+									value="#{loginBean.empresa.email}" onblur="onBlurEmail();" />
+								
+								<span class="help-inline" style="width: 100px; display: none;"
+									id="spanEmailLogin">#{inter.email_required}</span>
+							</h:panelGrid>
+
+
+							<br />
+							<h:panelGrid styleClass="control-group" id="LoginSenhaGroup">
+								<h:outputLabel for="senha" value="#{inter.password}"
+									styleClass="control-label" />
+								<h:column>
+									<h:inputSecret id="senha" required="true"
+										value="#{loginBean.empresa.senha}" onblur="onBlurSenha();" />
+									<h:commandButton value="#{inter.sign}" type="submit"
+										action="#{loginBean.efetuaLogin}" style="margin-left: 5px"
+										styleClass="fRight btn btn-primary" onclick="showMessage();">
+										<f:ajax execute="email senha" render=""></f:ajax>
+									</h:commandButton>
+								</h:column>
+								<span class="help-inline" style="width: 130px; display: none;"
+									id="spanSenhaLogin">#{inter.password_required}</span>
+								
+							</h:panelGrid>
+							
+							
+							
+						</h:panelGrid>
+
+
+
+					</h:panelGrid>
+					
+					<h:panelGrid styleClass="control-group" id="requestPass">
+						<h:commandLink style="margin-left: 15px" 
+							type="submit" action="#{loginBean.recoverPass}" 
+							value="Send mail my pass" />
+					</h:panelGrid>
+
+
+
+				</div>
+			</div>
+
+			<div class="alert alert-error"
+				style="margin-left: 400px; width: 350px;" id="msgError">
+				<strong>Erro!</strong>
+				<span id="SpanError">#{loginBean.messageError}</span>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

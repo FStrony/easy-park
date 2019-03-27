@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<!-- TAB LOCALIZACAO DO ESTACIONAMENTO -->
+
+
+	<div style="text-align: left;">
+
+		<div id="apresentacao">
+			<fieldset>
+				<legend>Busca Endereço</legend>
+
+				<h:panelGrid styleClass="control-group" id="groupEndereco">
+					<label class="control-label" for="txtEndereco">Endereço</label>
+
+					<h:inputText style="width:750px"
+						value="#{estacionamentoBean.enderecoEstacionamento.logradouro}"
+						id="txtEndereco" name="txtEndereco" class="valorEndereco" onblur="onBlurEndereco();" />
+					<span class="help-inline" style="width: 206px; display: none;"
+						id="spanEndereco">Digite o endereco</span>
+					<p>Ex: Avenida Lins de Vasconcelos, 2035 - Vila Mariana, São
+						Paulo, 01537-001, Brazil</p>
+				</h:panelGrid>
+
+
+
+
+				<h:panelGrid styleClass="control-group" id="groupNumero">
+					<h:outputLabel value="Número " for="idNumero"
+						styleClass="control-label" />
+					<h:inputText id="idNumero" class="numeroEndereco" style="width:65px"
+						value="#{estacionamentoBean.enderecoEstacionamento.numero}"
+						size="5" onblur="onBlurNumero();createMarker();" />
+					<span class="help-inline" style="width: 206px; display: none;"
+						id="spanNumero">Digite o numero</span>
+				</h:panelGrid>
+
+
+
+				<h:outputLabel value="Complemento " for="idComplemento" />
+				<h:inputText
+					value="#{estacionamentoBean.enderecoEstacionamento.complemento}"
+					style="width: 500px" size="50" id="idComplemento" />
+
+				<h:inputText id="idLatitude" style="display:none;" class="classLatitude"  value="#{estacionamentoBean.enderecoEstacionamento.latitude}" />
+				<h:inputText id="idLongitude" style="display:none;" class="classLongitude" value="#{estacionamentoBean.enderecoEstacionamento.longitude}" />
+
+
+				<div id="mapa"></div>
+
+			</fieldset>
+		</div>
+	</div>
+</ui:composition>

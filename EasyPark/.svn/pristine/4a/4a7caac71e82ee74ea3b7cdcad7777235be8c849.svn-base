@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0   
+  Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- TAB INFORMAÇÕES DE VAGAS E VALORES DO ESTACIONAMENTO -->
+<div class="modal in fade" id="modalDetail" role="dialog">
+	<div class="modal-header">
+		<h3>Detalhes do Estacionamento</h3>
+	</div>
+	<div class="modal-body">
+	<h:panelGrid rendered="#{listaEstacionamentoBean.showDetail}"
+		id="display" columns="2" cellpadding="4">
+		<h:outputText value="#{inter.name}:" />
+		<h:outputText
+			value="#{listaEstacionamentoBean.selectedEstacionamento.nome}" />
+
+		<h:outputText value="#{inter.zip_code}:" />
+		<h:outputText
+			value="#{listaEstacionamentoBean.selectedEstacionamento.enderecoEstacionamento.cep}" />
+		<h:outputText value="#{inter.neighborhood}:" />
+		<h:outputText value="#{listaEstacionamentoBean.bairro}" />
+		<h:outputText value="#{inter.city}:" />
+		<h:outputText value="#{listaEstacionamentoBean.cidade}" />
+		<h:outputText value="#{inter.state}:" />
+		<h:outputText value="#{listaEstacionamentoBean.estado}" />
+		<h:outputText value="#{inter.address}:" />
+		<h:outputText value="#{listaEstacionamentoBean.selectedEstacionamento.enderecoEstacionamento.logradouro}" />
+
+		<h:outputText value="#{inter.hours}:" />
+
+		<h:dataTable styleClass="table table-striped table-bordered" var="hrs"
+			id="idHorarios"
+			value="#{listaEstacionamentoBean.selectedEstacionamento.horariosFuncionamento}">
+			<h:column>
+
+				<f:facet name="header">
+						#{inter.opening}:
+					</f:facet>
+				<h:outputText value="#{hrs.horarioFuncionamentoInicio}">
+					<f:convertDateTime pattern="HH:mm:ss" type="date" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+						#{inter.closing_time}:
+					</f:facet>
+				<h:outputText value="#{hrs.horarioFuncionamentoFinal}">
+					<f:convertDateTime pattern="HH:mm:ss" type="date" />
+				</h:outputText>
+			</h:column>
+		</h:dataTable>
+
+		<h:outputText value="#{inter.telephones}:" />
+
+		<h:dataTable styleClass="table table-striped table-bordered" var="tel"
+			id="idContato"
+			value="#{listaEstacionamentoBean.selectedEstacionamento.telefones}">
+			<h:column headerText="id">
+				<f:facet name="header">
+						#{inter.code}:
+					</f:facet>
+							#{tel.id}
+						</h:column>
+			<h:column>
+				<f:facet name="header">
+						#{inter.type_contact}:
+					</f:facet>
+							#{tel.tipoTelefone.descricao}
+						</h:column>
+			<h:column>
+				<f:facet name="header">
+						#{inter.phone}:
+					</f:facet>
+			
+							( #{tel.ddd} ) #{tel.numero}
+						</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+	</div>
+	 <div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal" >Fechar</a>
+		</div>
+	</div>
+</ui:composition>
